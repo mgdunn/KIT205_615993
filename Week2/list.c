@@ -3,6 +3,7 @@
 #include "list.h"
 
 
+
 // Function to create and return a new empty list.
 List new_list() {
 	List temp;
@@ -16,7 +17,6 @@ void print_list(List* self) {
 	while (current != NULL) {
 		printf("%d", current->data);
 		current = current->next;
-
 		if (current != NULL)
 			printf(", ");
 	}
@@ -90,4 +90,129 @@ void destroy_list(List* self) {
 		free(to_free);
 	}
 	self->head = NULL;
+}
+
+void list_test() {
+
+	int numbers[5] = { 5, 3, 7, 2, 0 };
+
+	List my_list = new_list();
+	printf("Testing insert_at_front...\n");
+	for (int i = 0; i < 5; i++) {
+		insert_at_front(&my_list, numbers[i]);
+	}
+
+	printf("Expected: %d, %d, %d, %d, %d\n", numbers[4], numbers[3], numbers[2], numbers[1], numbers[0]);
+	printf("Result: ");
+	print_list(&my_list);
+}
+
+void option_insert(List* my_list) {
+	int number;
+
+	printf("Give an int to add to list\n");
+	scanf_s("%d", &number);
+	insert_at_front(my_list, number);
+}
+
+void option_delete(List* my_list) {
+	int number = 0;
+
+	printf("Give an int to remove from list\n");
+	scanf_s("%d", &number);
+	delete_list(my_list, number);
+}
+
+void option_print(List* my_list) {
+	print_list(my_list);
+
+}
+
+void reverse(List* my_list) {
+	ListNodePtr prev = NULL;
+	ListNodePtr current = my_list->head;
+	ListNodePtr next = NULL;
+
+	while (current != NULL) {
+		next = current->next;    // Store next node
+		current->next = prev;    // Reverse the current node's pointer
+		prev = current;          // Move pointers one position ahead
+		current = next;
+	}
+	my_list->head = prev;
+
+}
+
+void merge(List* list1, List* list2) {
+	List merged_list = new_list();
+	ListNodePtr current1 = list1->head;
+	ListNodePtr current2 = list2->head;
+	ListNodePtr prev1 = NULL;
+	ListNodePtr prev2 = NULL;
+
+	while (current1 != NULL && current2 != NULL) {
+		if (current1->data < current2->data) {
+			// insert current1 into list
+			insert_in_order(&merged_list, current1->data);
+			current1 = current1->next;
+
+		} else {                
+			// insert current2 into list
+			insert_in_order(&merged_list, current2->data);
+			current2 = current2->next;
+		}
+	}
+
+	// If there are remaining elements in list1
+	while (current1 != NULL) {
+		insert_in_order(&merged_list, current1->data);
+		current1 = current1->next;
+	}
+
+	// If there are remaining elements in list2
+	while (current2 != NULL) {
+		insert_in_order(&merged_list, current2->data);
+		current2 = current2->next;
+	}
+
+	// Assign merged list to list1
+	list1->head = merged_list.head;
+}
+
+void list_adhoc_test() {
+
+	List my_list = new_list();
+	int quit = 0;
+
+
+	while (!quit) {
+		int option;
+		printf("Select your option:\n ");
+		printf("1: Exit \n");
+		printf("2: Insert data \n");
+		printf("3: Delete data \n");
+		printf("4: Print list \n");
+		scanf_s("%d", &option);
+
+		switch (option) {
+		case 1:
+			quit = 1;
+			break;
+		case 2:
+			option_insert(&my_list);
+			break;
+		case 3:
+			option_delete(&my_list);
+			break;
+		case 4:
+			option_print(&my_list);
+			break;
+		default:
+			printf("Invalid choice, PLease enter a number between 0 and 3.\n");
+			break;
+		}	
+		
+	}
+
+
 }
