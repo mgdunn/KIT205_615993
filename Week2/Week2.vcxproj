@@ -129,9 +129,15 @@
   <ItemGroup>
     <ClCompile Include="list.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="soc-academia.txt" />
+    <ClCompile Include="Week8.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="graph.h" />
     <ClInclude Include="list.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
